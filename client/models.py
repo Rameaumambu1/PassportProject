@@ -1,10 +1,12 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
+from django.core.mail import send_mail
+from django.conf import settings
+from .utils import envoyer_notification_email
+
+# Create your models here.
 
 class Personne(models.Model):
     """Représente une personne pour laquelle une demande de passeport peut être faite."""
@@ -12,6 +14,7 @@ class Personne(models.Model):
     prenom = models.CharField(max_length=100)
     date_naissance = models.DateField()
     adresse = models.TextField()
+    email = models.EmailField()
 
     def __str__(self):
         return f"{self.prenom} {self.nom}"
@@ -48,16 +51,34 @@ class DemandePasseport(models.Model):
             return f"Demande {self.numero_demande} pour {self.personne.prenom} {self.personne.nom}"
 
     def planifier_rendez_vous(self):
-        """Planifie automatiquement les rendez-vous après la validation du paiement si le rendez-vous ANR a été confirmé."""
+        """Planifie automatiquement les rendez-vous et envoie des notifications."""
         if self.date_paiement and not self.date_rendez_vous_anr:
             # Planifie le rendez-vous avec ANR deux jours après la validation du paiement
             self.date_rendez_vous_anr = self.date_paiement + timedelta(days=2)
             self.save()
+            # Envoyer une notification par e-mail pour le rendez-vous ANR
+            sujet = 'Votre rendez-vous avec ANR a été planifié'
+            message_template = 'email_rdv_anr.html'
+            context = {
+                'prenom': self.utilisateur.first_name,
+                'nom': self.utilisateur.last_name,
+                'date_rendez_vous_anr': self.date_rendez_vous_anr
+            }
+            envoyer_notification_email(self.utilisateur.email, sujet, message_template, context)
 
         if self.date_rendez_vous_anr and not self.date_rendez_vous_ministere and self.anr_rendez_vous_complet:
             # Planifie le rendez-vous avec le ministère deux jours après le rendez-vous ANR
             self.date_rendez_vous_ministere = self.date_rendez_vous_anr + timedelta(days=2)
             self.save()
+            # Envoyer une notification par e-mail pour le rendez-vous avec le ministère
+            sujet = 'Votre rendez-vous avec le ministère a été planifié'
+            message_template = 'email_rdv_ministere.html'
+            context = {
+                'prenom': self.utilisateur.first_name,
+                'nom': self.utilisateur.last_name,
+                'date_rendez_vous_ministere': self.date_rendez_vous_ministere
+            }
+            envoyer_notification_email(self.utilisateur.email, sujet, message_template, context)
 
     def verifier_rendez_vous_anr(self):
         """Vérifie automatiquement si le rendez-vous ANR est raté."""
@@ -66,6 +87,18 @@ class DemandePasseport(models.Model):
             if timezone.now() > date_limite and not self.anr_rendez_vous_complet:
                 self.statut = 'annulee'
                 self.save()
+
+
+    def notifier_personne(self):
+        """Envoie une notification à la personne concernée par la demande."""
+        if not self.est_pour_moi and self.personne:
+            send_mail(
+                'Nouvelle Demande de Passeport',
+                f'Bonjour {self.personne.prenom},\n\nUne demande de passeport a été effectuée en votre nom. Votre numéro de demande est {self.numero_demande}.',
+                'from@example.com',  # Adresse e-mail de l'expéditeur
+                [self.personne.email],  # Assurez-vous que le modèle `Personne` a un champ `email`
+                fail_silently=False,
+            )
 
 class Paiement(models.Model):
     """Représente le paiement pour une demande de passeport."""
