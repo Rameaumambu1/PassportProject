@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Demandes</title>
+    <style>
+        .a{
+            text-decoration: none;
+            color: brown;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Demandes de Passeport</h1>
+    <ul>
+        {% for demande in demandes %}
+            <li><a class="a" href="{% url 'demande_detail' demande.id %}">La demande ( {{ demande.numero_demande }} ) de Mr (Mme) {{ demande.personne }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'personne_create' %}">Créer une nouvelle demande</a>
+</body>
+</html>

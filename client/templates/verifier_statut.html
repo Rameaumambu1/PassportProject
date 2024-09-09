@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérifier le Statut</title>
+</head>
+<body>
+    <h1>Vérifier le Statut de la Demande</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Vérifier</button>
+    </form>
+    
+    {% if demande %}
+        <h2>Détails de la Demande</h2>
+        <p><strong>Numéro de la Demande:</strong> {{ demande.numero_demande }}</p>
+        <p><strong>Statut:</strong> {{ statut }}</p>
+    {% elif statut is not None %}
+        <p>Aucune demande trouvée avec ce numéro.</p>
+    {% endif %}
+</body>
+</html>

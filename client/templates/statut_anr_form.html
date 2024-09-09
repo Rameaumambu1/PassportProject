@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statut du Rendez-vous ANR</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Mettre à jour le Statut du Rendez-vous ANR</h1>
+    </header>
+    <main>
+        <h2>Demande ID : {{ demande.id }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Soumettre</button>
+        </form>
+        <a href="{% url 'demande_detail' demande_id=demande.id %}">Retour aux détails de la demande</a>
+    </main>
+</body>
+</html>

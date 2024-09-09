@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter la personne pour Créer une Demande de Passeport</title>
+    {% load static %}
+</head>
+<body>
+    <h1>Saisissez la personne</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ formP.as_p }}
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+</html>

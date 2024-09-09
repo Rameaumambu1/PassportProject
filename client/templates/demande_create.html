@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer une Demande de Passeport</title>
+    {% load static %}
+</head>
+<body>
+    <h1>Créer une Demande de Passeport</h1>
+    {{ last_personne }}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer une Demande de Passeport</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Créer une Demande de Passeport</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Créer la demande</button>
+        
+    </form>
+    <!-- <a href="{% url 'demande_list' %}">Retour à la liste des demandes</a>
+    <a href="{% url 'demande_detail' demande.id %}">Voir les détails</a> -->
+
+
+</body>
+</html>
+
+e3x3U

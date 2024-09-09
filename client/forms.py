@@ -6,11 +6,12 @@ class PersonneForm(forms.ModelForm):
 
     class Meta:
         model = Personne
-        fields = ['nom', 'prenom', 'date_naissance', 'adresse', 'email']
+        fields = ['nom', 'prenom', 'date_naissance', 'email', 'taille', 'signe_particulier', 'nom_du_pere', 'postnom_du_pere', 'prenom_du_pere', 'nom_de_la_mere', 'postnom_de_la_mere', 'prenom_de_la_mere', 'groupe_ethnique', 'localite_origine', 'territoire', 'secteur', 'province', 'nationalite_origine', 'nationalite_actuelle', 'image_signature_du_requerant']
         widgets = {
             'date_naissance': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'adresse': forms.Textarea(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'image_signature_du_requerant': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*', 'capture': 'environment'}),
         }
 
 class DemandePasseportForm(forms.ModelForm):
@@ -19,18 +20,19 @@ class DemandePasseportForm(forms.ModelForm):
     class Meta:
         model = DemandePasseport
         fields = [
-            'personne', 'est_pour_moi', 'statut', 'date_paiement', 'date_revision',
-            'date_finalisation', 'date_rejet', 'date_rendez_vous_anr', 
-            'date_rendez_vous_ministere', 'anr_rendez_vous_complet'
+            'personne',
+            #   'statut', 'date_paiement', 'date_revision',
+            # 'date_finalisation', 'date_rejet', 'date_rendez_vous_anr', 
+            # 'date_rendez_vous_ministere', 'anr_rendez_vous_complet'
         ]
         widgets = {
-            'date_paiement': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'date_revision': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'date_finalisation': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'date_rejet': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'date_rendez_vous_anr': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'date_rendez_vous_ministere': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'anr_rendez_vous_complet': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            # 'date_paiement': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            # 'date_revision': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            # 'date_finalisation': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            # 'date_rejet': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            # 'date_rendez_vous_anr': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            # 'date_rendez_vous_ministere': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            # 'anr_rendez_vous_complet': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -57,6 +59,11 @@ class PaiementForm(forms.ModelForm):
         widgets = {
             'montant': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
         }
+
+
+class VerifierStatutForm(forms.Form):
+    numero_demande = forms.CharField(max_length=100, label='Numéro de la demande')
+
 
 class StatutANRForm(forms.ModelForm):
     """Formulaire pour mettre à jour le statut du rendez-vous avec la société ANR."""

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de la Demande de Passeport</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Détails de la Demande de Passeport</h1>
+    </header>
+    <main>
+        <h2>Demande ID : {{ demande.id }}</h2>
+        <p>Utilisateur : {{ demande.utilisateur.username }}</p>
+        <p>Statut : {{ demande.get_statut_display }}</p>
+        <p>Date de création : {{ demande.date_creation }}</p>
+        <p>Date de paiement : {{ demande.date_paiement }}</p>
+        <a href="{% url 'demande_passeport_create' %}">Créer une nouvelle demande</a>
+        <a href="{% url 'paiement_view' demande_id=demande.id %}">Gérer le paiement</a>
+        <a href="{% url 'statut_anr_view' demande_id=demande.id %}">Mettre à jour le statut ANR</a>
+        <a href="{% url 'statut_ministere_view' demande_id=demande.id %}">Mettre à jour le statut du ministère</a>
+    </main>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statut Demande</title>
+</head>
+<body>
+    <h1>Statut de la demande</h1>
+    
+
+    <p><strong>Numéro de demande:</strong> {{ demande.numero_demande }}</p>
+    <p><strong>Statut:</strong> {{ demande.get_statut_display }}</p>
+    <p><strong>anr_rendez_vous_complet:</strong> {{ demande.anr_rendez_vous_complet }}</p>
+    <p><strong>Date de demande:</strong> {{ demande.date_demande }}</p>
+    <p><strong>Date de paiement:</strong> {{ demande.date_paiement }}</p>
+    <p><strong>Date de révision:</strong> {{ demande.date_revision }}</p>
+    <p><strong>Date de finalisation:</strong> {{ demande.date_finalisation }}</p>
+    <p><strong>Date de rejet:</strong> {{ demande.date_rejet }}</p>
+    <p><strong>Date de rendez-vous ANR:</strong> {{ demande.date_rendez_vous_anr }}</p>
+    <p><strong>Date de rendez-vous ministère:</strong> {{ demande.date_rendez_vous_ministere }}</p>
+
+    {% if demande.date_rendez_vous_anr is None %}
+    ggggggggggggg
+    {% else %}
+    aaaaaaaaaaaa
+    {% endif %}
+
+<br><br>
+    {% if demande.anr_rendez_vous_complet is False %}
+    Faux !!!!!!!!!!
+    {% else %}
+    Vrai !!!!!!!!!!
+    {% endif %}
+    <br>
+    <!-- Affichage des champs non remplis -->
+<div>
+    {% if champ_non_rempli.date_paiement %}
+        <p style="color: red;">La date de paiement n'est pas encore remplie.</p>
+    {% endif %}
+    {% if champ_non_rempli.date_revision %}
+        <p style="color: red;">La date de révision n'est pas encore remplie.</p>
+    {% endif %}
+    {% if champ_non_rempli.date_finalisation %}
+        <p style="color: red;">La date de finalisation n'est pas encore remplie.</p>
+    {% endif %}
+    {% if champ_non_rempli.date_rejet %}
+        <p style="color: red;">La date de rejet n'est pas encore remplie.</p>
+    {% endif %}
+    {% if champ_non_rempli.date_rendez_vous_anr %}
+        <p style="color: red;">La date de rendez-vous ANR n'est pas encore remplie.</p>
+    {% endif %}
+    {% if champ_non_rempli.date_rendez_vous_ministere %}
+        <p style="color: red;">La date de rendez-vous ministère n'est pas encore remplie.</p>
+    {% endif %}
+</div>
+    
+</body>
+</html>
