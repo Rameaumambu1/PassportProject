@@ -6,7 +6,11 @@ import sys
 
 def main():
     """Run administrative tasks."""
+<<<<<<< HEAD
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VIPRO.settings')
+=======
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PASSEPORT.settings')
+>>>>>>> origin/master
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
